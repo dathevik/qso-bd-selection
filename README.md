@@ -4,95 +4,101 @@ This repository is for the 4MOST/CHANGES project, focusing on high-redshift quas
 
 ---
 
-## Algorithmic Workflow
+# Survey Data Processing Pipeline
 
 ```
-Input Data (~420 million)
-        |
-        v
-+-------------------------------+
-| Removing Initial Contaminants | (removing_initial_contaminants/)
-+-------------------------------+
-        |
-        v
-+-------------------+
-|   SED Fitting     |   (sed_script/)
-|   (~13 million)   |
-+-------------------+
-        |
-        v
-+-------------------+
-|    Color Cut      |   (color_cut/)
-+-------------------+
-        |
-        v
-+-------------------+
-| Statistical Cuts  |
-|   (~10 million)   | 
-+-------------------+
-        |
-        v
-+-------------------+
-|  Prioritization   |
-|   (~930,000)      |
-+-------------------+
-        |
-        v
-+-------------------+
-|  Initial Output   |  
-|    (~19,000)      |  
-+-------------------+
-        |
-        v
-+---------------------------------------------+
-| Crossmatch with DECaLS DR10: g_decal Det.?  |
-+---------------------------------------------+
-        |                          |
-      Yes                          No
-        |                          |
-        v                          v
-+-------------------+    +-------------------+
-|  SNR Cut          |    |  SNR Cut          |
-|  (~17,000)        |    |  (~17,000)        |
-+-------------------+    +-------------------+
-        |                          |
-        v                          v
-+-------------------+    +-------------------+
-|   SED Fitting     |    |   SED Fitting     |
-|   (~3,200)        |    |   (~3,200)        |
-+-------------------+    +-------------------+
-        |                          |
-        v                          v
-+-------------------+    +-------------------+
-|   Color Cuts      |    |   Color Cuts      |
-+-------------------+    +-------------------+
-        |                          |
-        v                          v
-+-------------------+    +-------------------+
-| Statistical Cut   |    | Statistical Cut   |
-|   (~2,600)        |    |   (~2,600)        |
-+-------------------+    +-------------------+
-        |                          |
-        v                          v
-+-------------------------------+ +-------------------------------+
-| Sample with DECaLS DR10       | | Sample with DELVE DR2         |
-| photometry (1840 sources)     | | photometry (1314 sources)     |
-+-------------------------------+ +-------------------------------+
-        |                          |
-        +-----------+--------------+
-                    |
-                    v
-              +-------------+
-              |   Merging   |
-              +-------------+
-                    |
-                    v
-         +------------------------+
-         | Final Catalog: 3154    | 
-         | sources                |      
-         +------------------------+
+                    ┌─────────────────┐
+                    │   Input Data    │
+                    │   ~420 mil.     │
+                    └─────────┬───────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │   Removing      │
+                    │   Initial       │
+                    │ Contaminants    │
+                    └─────────┬───────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │   SED fitting   │
+                    │   ~ 13 mil.     │
+                    └─────┬───┬───────┘
+                          │   │
+                          │   ▼
+                          │ ┌─────────────────┐
+                          │ │   Color Cut     │
+                          │ └─────────┬───────┘
+                          │           │
+                          ▼           ▼
+                    ┌─────────────────┐
+                    │ Statistical     │
+                    │ Cuts            │
+                    │ ~ 10 mil.       │
+                    └─────────┬───────┘
+                              │
+                              ▼
+                    ╱─────────────────╲
+                   ╱  Prioritization   ╲
+                  ╱    ~ 930,000        ╲
+                 ╱_____________________╲
+                              │
+                              ▼
+                    ╲─────────────────╱
+                     ╲ Initial Output ╱
+                      ╲  ~ 24,500    ╱
+                       ╲_____________╱
+                              │
+                              ▼
+                        ◆─────────────────◆
+                       ╱ Crossmatch with   ╲
+                      ╱  DECaLS DR10.      ╲
+                     ╱   Detection of      ╲
+                    ╱    g_decals?         ╲
+                   ◆─────────────────────────◆
+                            │       │
+                          yes│       │no
+                             │       │
+                             ▼       ▼
+                   ┌─────────────────┐    ╭─────────────────╮
+                   │ SNR cut of      │    │ Sample with     │
+                   │ g_decals        │    │ DELVE DR2       │
+                   │ ~ 23,000        │    │ photometry      │
+                   └─────────┬───────┘    │ 1108 sources    │
+                             │            ╰─────────┬───────╯
+                             ▼                      │
+                   ╭─────────────────╮              │
+                   │ Sample with     │              │
+                   │ DECaLS DR10     │              │
+                   │ photometry      │              │
+                   │ 5017 sources    │              │
+                   ╰─────────┬───────╯              │
+                             │                      │
+                             ▼                      │
+                    ╱─────────────────╲              │
+                   ╱     Merging       ╲◄────────────┘
+                  ╱___________________╲
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │  Final catalog  │
+                    │  6125 sources   │
+                    └─────────────────┘
 ```
 
+## Process Flow Description
+
+1. **Input Data** (~420 million sources) → Initial dataset
+2. **Removing Initial Contaminants** → Data cleaning step
+3. **SED fitting** (~13 million) → Spectral energy distribution analysis
+4. **Color Cut** + **Statistical Cuts** (~10 million) → Quality filtering
+5. **Prioritization** (~930,000) → Target selection
+6. **Initial Output** (~24,500) → Preliminary results
+7. **Crossmatch with DECaLS DR10** → Decision point for detection
+   - **Yes**: SNR cut of g_decals (~23,000) → DECaLS DR10 photometry (5017 sources)
+   - **No**: DELVE DR2 photometry (1108 sources)
+8. **Merging** → Combine both branches
+9. **Final catalog** (6125 sources) → Final output
 ---
 
 ## Folder Structure & Purposes

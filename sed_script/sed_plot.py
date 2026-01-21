@@ -319,27 +319,27 @@ for i in range(len(id)):
             # Set y-axis to log scale
             plt.yscale('log')
 
-            plt.scatter(ll_vec_best, vec_flux_model_BD_best, color="#836853",
+            plt.scatter(ll_vec_best, vec_flux_model_BD_best, color="#008000", alpha=0.6, marker='^',
                         label=f"Best BD template ({BD_Chi2_min_temp}, χ² = {np.around(BD_Chi2_min, decimals=2)})",
                         zorder=5, facecolor='none', s=100, linewidth=2)
 
             # Only show photo_z for QSO lists
             if list_type == 1:  # QSO
-                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#004987",
+                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#ff8c69",
                             label=f"Best QSO template (χ² = {np.around(QSO_Chi2_min, decimals=2)}, photo_z = {np.around(QSO_Chi2_min_z, decimals=2)})",
                             zorder=5, facecolor='none', s=100, linewidth=2)
             else:  # BD or test
-                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#004987",
+                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#ff8c69",
                             label=f"Best QSO template (χ² = {np.around(QSO_Chi2_min, decimals=2)})",
                             zorder=5, facecolor='none', s=100, linewidth=2)
             
             # Modify the label based on list_type
             if list_type == 1:  # QSO
-                plt.errorbar(ll_vec_best, vec_flux_obs, yerr=vec_fluxe_obs, fmt='o', color='#FCD12A',
+                plt.errorbar(ll_vec_best, vec_flux_obs, yerr=vec_fluxe_obs, fmt='o', color='#ff6b6b',
                              label=f'Initial flux of the quasar (spec_z = {object_redshift})',
                              markersize=8, capsize=4, capthick=2, elinewidth=2)
             elif list_type == 2:  # BD
-                plt.errorbar(ll_vec_best, vec_flux_obs, yerr=vec_fluxe_obs, fmt='o', color='#FCD12A',
+                plt.errorbar(ll_vec_best, vec_flux_obs, yerr=vec_fluxe_obs, fmt='o', color='#008000',
                              label=f'Initial flux of the BD (SpecT = {data_fil["optical_type"][i]})',
                              markersize=8, capsize=4, capthick=2, elinewidth=2)
             else:  # test
@@ -347,10 +347,10 @@ for i in range(len(id)):
                              label='Initial flux of the object',
                              markersize=8, capsize=4, capthick=2, elinewidth=2)
             
-            plt.plot(w_rest, flux_mJY_best, color="#a7bed3", 
+            plt.plot(w_rest, flux_mJY_best, color="#ff6b6b", alpha=0.3,
                      label='QSO model spectrum', 
                      zorder=0, linewidth=2)
-            plt.plot(bdRA_l_fin, bdRA_fmJy_best, color="#dab894", 
+            plt.plot(bdRA_l_fin, bdRA_fmJy_best, color="#008000", alpha=0.3,
                      label='BD model spectrum',
                      zorder=0, linewidth=2)
  
@@ -400,17 +400,17 @@ for i in range(len(id)):
             # Set y-axis to log scale
             plt.yscale('log')
 
-            plt.scatter(ll_vec_best, vec_flux_model_BD_best, color="#836853",
+            plt.scatter(ll_vec_best, vec_flux_model_BD_best, color="#008000", alpha=0.6, marker='^',
                         label=f"Best BD template ({BD_Chi2_min_temp}, χ² = {np.around(BD_Chi2_min, decimals=2)})",
                         zorder=5, facecolor='none', s=100, linewidth=2)
 
             # Only show photo_z for QSO lists
             if list_type == 1:  # QSO
-                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#004987",
+                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#ff8c69",
                             label=f"Best QSO template (χ² = {np.around(QSO_Chi2_min, decimals=2)}, photo_z = {QSO_Chi2_min_z})",
                             zorder=5, facecolor='none', s=100, linewidth=2)
             else:  # BD or test
-                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#004987",
+                plt.scatter(ll_vec_best, vec_flux_model_QSO_best, color="#ff8c69",
                             label=f"Best QSO template (χ² = {np.around(QSO_Chi2_min, decimals=2)})",
                             zorder=5, facecolor='none', s=100, linewidth=2)
             
@@ -428,10 +428,10 @@ for i in range(len(id)):
                              label='Initial flux of the object',
                              markersize=8, capsize=4, capthick=2, elinewidth=2)
             
-            plt.plot(wave, flux_mJY_best*1e6, color="#a7bed3", 
+            plt.plot(wave, flux_mJY_best*1e6, color="#ff8c69", alpha=0.3,
                      label='QSO model spectrum', 
                      zorder=0, linewidth=2)
-            plt.plot(bdRA_l_fin, bdRA_fmJy_best, color="#dab894", 
+            plt.plot(bdRA_l_fin, bdRA_fmJy_best, color="#008000", alpha=0.3,
                      label='BD model spectrum',
                      zorder=0, linewidth=2)
 
@@ -448,118 +448,3 @@ for i in range(len(id)):
             plt.show()
             plt.close()
 
-# Comment out the regular flux plot
-# Create the first plot with regular flux
-# plt.figure(figsize=(10, 7), dpi=300)
-# plt.rcParams['font.family'] = 'serif'
-# plt.rcParams['font.serif'] = ['Times New Roman']
-# plt.rcParams['axes.linewidth'] = 1.5
-# 
-# # Plot data points with enhanced styling
-# plt.scatter(ll_vec, vec_flux_obs, 
-#             c='#1f77b4', alpha=0.6, label='Observed Flux', s=6, edgecolor='none')
-# plt.errorbar(ll_vec, vec_flux_obs, yerr=vec_fluxe_obs,
-#              fmt='none', color='#1f77b4', alpha=0.4, capsize=3)
-# 
-# # Plot template fluxes if available
-# if 'vec_flux_model' in locals():
-#     plt.plot(ll_vec, vec_flux_model, 
-#              c='#d62728', alpha=0.7, label='Template Flux', linewidth=2)
-# 
-# # Customize the plot
-# plt.xlabel('Wavelength (Å)', fontsize=14, fontweight='bold')
-# plt.ylabel('Flux (mJy)', fontsize=14, fontweight='bold')
-# plt.legend(fontsize=12, loc='upper right', frameon=True, framealpha=0.9)
-# 
-# # Add grid lines
-# plt.grid(True, alpha=0.2, linestyle='--')
-# plt.minorticks_on()
-# plt.grid(True, which='minor', linestyle=':', alpha=0.1)
-# 
-# # Tight layout and save
-# plt.tight_layout()
-# plt.savefig(f"output_test/{ls_id}_sed.png", dpi=300, bbox_inches='tight')
-# plt.close()
-
-# Create the second plot with log flux
-plt.figure(figsize=(10, 7), dpi=300)
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['font.serif'] = ['Times New Roman']
-plt.rcParams['axes.linewidth'] = 1.5
-
-# Convert flux values to log scale
-vec_flux_obs_log = np.log10(vec_flux_obs)
-# Handle error bars - ensure they're positive and convert to log scale
-vec_fluxe_obs_positive = np.abs(vec_fluxe_obs)  # Ensure positive values
-vec_fluxe_obs_log = np.log10(vec_fluxe_obs_positive)
-vec_flux_model_log = np.log10(vec_flux_model) if 'vec_flux_model' in locals() else None
-
-# Plot data points with enhanced styling
-plt.scatter(ll_vec_best, vec_flux_obs_log, 
-            c='#1f77b4', alpha=0.6, label='Observed Flux', s=6, edgecolor='none')
-plt.errorbar(ll_vec_best, vec_flux_obs_log, yerr=vec_fluxe_obs_log,
-             fmt='none', color='#1f77b4', alpha=0.4, capsize=3)
-
-# Plot template fluxes if available
-if vec_flux_model_log is not None:
-    plt.plot(ll_vec_best, vec_flux_model_log, 
-             c='#d62728', alpha=0.7, label='Template Flux', linewidth=2)
-
-# Customize the plot
-plt.xlabel('Wavelength (Å)', fontsize=18, fontweight='bold')
-plt.ylabel('Log Flux (mJy)', fontsize=18, fontweight='bold')
-plt.legend(fontsize=12, loc='upper right', frameon=True, framealpha=0.9)
-
-# Add grid lines
-plt.grid(True, alpha=0.2, linestyle='--')
-plt.minorticks_on()
-plt.grid(True, which='minor', linestyle=':', alpha=0.1)
-
-# Tight layout and save
-plt.tight_layout()
-plt.savefig(f"output_test/{ls_id}_sed_log.png", dpi=300, bbox_inches='tight')
-plt.show()
-plt.close()
-
-# --- Test block: Plot SED for J000009.99-041626.09 from F23_fluxes_test.dat ---
-if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-    from astropy.io import ascii
-    import numpy as np
-
-    # Read the table
-    data = ascii.read('input_test/F23_fluxes_test.dat')
-
-    # Find the row for your object
-    obj_id = 'J000009.99-041626.09'
-    row = data[data['ls_id'] == obj_id][0]
-
-    # Central wavelengths for each band (Angstrom)
-    ll_vec = np.array([4798.35, 6407.49, 7802.49, 9144.63, 10201.36, 12325.13, 16473.96, 22045.77, 33791.88, 46292.94])
-
-    # Extract fluxes and errors for all 10 bands
-    vec_flux_row = np.array([
-        row['g_prime_delve'], row['r_prime_delve'], row['i_prime_delve'], row['z_prime_delve'],
-        row['vista.vircam.Y_vhs'], row['vista.vircam.J_vhs'], row['vista.vircam.H_vhs'], row['vista.vircam.Ks_vhs'],
-        row['WISE1'], row['WISE2']
-    ], dtype=float)
-
-    vec_fluxe_row = np.array([
-        row['g_prime_err_delve'], row['r_prime_err_delve'], row['i_prime_err_delve'], row['z_prime_err_delve'],
-        row['vista.vircam.Y_err_vhs'], row['vista.vircam.J_err_vhs'], row['vista.vircam.H_err_vhs'], row['vista.vircam.Ks_err_vhs'],
-        row['WISE1_err'], row['WISE2_err']
-    ], dtype=float)
-
-    # Mask for valid fluxes
-    mask_nan = ~np.isnan(vec_flux_row)
-
-    # Plot
-    plt.figure(figsize=(12,6))
-    plt.errorbar(ll_vec[mask_nan], vec_flux_row[mask_nan], yerr=vec_fluxe_row[mask_nan], fmt='o', color='navy', capsize=3)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel('Wavelength (Angstrom)')
-    plt.ylabel('Flux')
-    plt.title(obj_id)
-    plt.tight_layout()
-    plt.show()

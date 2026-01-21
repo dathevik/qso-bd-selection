@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import ascii
 import random
-from scipy.stats import gaussian_kde
 
 # Set random seed for reproducibility
 random.seed(42)
@@ -16,7 +15,7 @@ def sample_data(data, n_samples):
 
 # Read data
 data_qso_araa = ascii.read('QSO_wise_spec.dat')
-data_qso_milliquas = ascii.read('QSO_milliquas_wise.dat')
+data_qso_milliquas = ascii.read('QSO_milliquas_wise_clean.dat')
 data_qso_yang = ascii.read('QSO_yang_wise.dat')
 data_bd_wise = ascii.read('BD_wise_SpT.dat', encoding='latin-1')
 data_bd_temp_L = ascii.read("L_type_wise.txt")
@@ -33,8 +32,8 @@ W1_qso_araa = data_qso_araa['w1mpro'] + 2.699
 W2_qso_araa = data_qso_araa['w2mpro'] + 3.399
 
 # Quasars Million Quasars Catalog v8
-W1_qso_milliquas = data_qso_milliquas['w1mpro'] + 2.699
-W2_qso_milliquas = data_qso_milliquas['w2mpro'] + 3.399
+W1_qso_milliquas = data_qso_milliquas['w1mpro_1'] + 2.699
+W2_qso_milliquas = data_qso_milliquas['w2mpro_1'] + 3.399
 
 #Quasars Yang 2023
 W1_qso_yang = data_qso_yang["w1mpro"] + 2.699
@@ -64,9 +63,9 @@ other_type_mask = ~M_type_mask & ~L_type_mask & ~T_type_mask
 
 # Define the colors for each type
 # QSO colors (distinct colors)
-color_QSO_1 = "#FF0000"  # Bright Red
-color_QSO_2 = "#0000FF"  # Bright Blue
-color_QSO_3 = "#FFA500"  # Orange (changed from pink)
+color_QSO_1 = "#ff6b6b"  # Darker Coral Red (from sed_plot.py QSO model spectrum, for F23)
+color_QSO_2 = "#FFA500"  # Yellow/Orange (for Fl23)
+color_QSO_3 = "#0000FF"  # Bright Blue (for Y23)
 
 # BD color
 color_BD = "#008000"   # Green
@@ -106,15 +105,13 @@ plt.scatter(W1_bd, W1_bd - W2_bd,
            label="BD Sample", s=40, alpha=0.1, marker="o", color=color_BD, zorder=1)
 
 # Plot QSO data points with different shades
-# Flesch sources in the back
-plt.plot(W1_qso_milliquas_sample, W1_qso_milliquas_sample - W2_qso_milliquas_sample, 'o',
-           label="Fl23 Sample", alpha=0.4, marker="D", markersize=16, markerfacecolor='None', markeredgecolor=color_QSO_2, markeredgewidth=1.6, zorder=4)
-
-# Fan and Yang sources in front with larger sizes
-plt.plot(W1_qso_araa_sample, W1_qso_araa_sample - W2_qso_araa_sample, 'o',
-           label="F23 Sample", marker="*",alpha=0.5, markersize=16, markerfacecolor='None', markeredgecolor=color_QSO_1, markeredgewidth=1.6, zorder=6)
+# Y23 in the back, Fl23 in middle, F23 in front
 plt.plot(W1_qso_yang_sample, W1_qso_yang_sample - W2_qso_yang_sample,'o', 
-           label="Y23 Sample", alpha=0.4, marker="^", markersize=16, markerfacecolor='None', markeredgecolor=color_QSO_3, markeredgewidth=1.6, zorder=5)
+           label="Y23 Sample", alpha=0.2, marker="^", markersize=16, markerfacecolor='None', markeredgecolor=color_QSO_3, markeredgewidth=1.6, zorder=4)
+plt.plot(W1_qso_milliquas_sample, W1_qso_milliquas_sample - W2_qso_milliquas_sample, 'o',
+           label="Fl23 Sample", alpha=0.5, marker="D", markersize=16, markerfacecolor='None', markeredgecolor=color_QSO_2, markeredgewidth=1.6, zorder=5)
+plt.plot(W1_qso_araa_sample, W1_qso_araa_sample - W2_qso_araa_sample, 'o',
+           label="F23 Sample", marker="*", alpha=0.6, markersize=16, markerfacecolor='None', markeredgecolor=color_QSO_1, markeredgewidth=1.6, zorder=10)
 
 # Add WISE color cut lines
 plt.axhline(y=-0.6, color='black', linestyle='--', linewidth=1.5, label='WISE color cut')
@@ -123,7 +120,7 @@ plt.axhline(y=0.6, color='black', linestyle='--', linewidth=1.5)
 # Labels and formatting
 plt.xlabel("W1 (AB)", fontsize=18)
 plt.ylabel("W1-W2 (AB)", fontsize=18)
-plt.legend(loc="upper right", fontsize=18, ncol=2)
+plt.legend(loc="upper left", fontsize=18, ncol=2)
 plt.ylim(-1, 3)
 plt.xlim(14, 21)
 plt.yticks([-1.0, -0.6, 0.0, 0.6, 1.0, 1.5, 2.0, 2.5, 3.0])

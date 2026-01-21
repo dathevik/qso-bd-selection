@@ -9,7 +9,7 @@ color_QSO_3 = "#FFA500"     # Y23
 color_BD = "#008000"  
 
 # Read data
-data_qso_milliquas = ascii.read('proper_motion_milliquas.dat')
+data_qso_milliquas = ascii.read('proper_motion_milliquas_clean.dat')
 data_qso_yang = ascii.read('proper_motion_yang.dat')
 data_bd = ascii.read('proper_motion_bd.dat')
 
@@ -48,8 +48,8 @@ square_x = [-2, 2, 2, -2, -2]
 square_y = [-2, -2, 2, 2, -2]
 plt.plot(square_x, square_y, color='gray', linestyle='--', linewidth=1.5, label='Proper Motion cut')
 
-# Legend
-plt.legend(loc="upper right", fontsize=20)
+# Legend - positioned outside the plot region at the top
+plt.legend(bbox_to_anchor=(0.5, 1.1), loc='center', fontsize=16, ncol=4)
 
 # Limits
 plt.ylim(-10, 10)

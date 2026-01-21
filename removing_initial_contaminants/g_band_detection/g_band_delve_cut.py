@@ -4,17 +4,17 @@ from astropy.io import ascii
 
 # Read data
 data_qso_araa = ascii.read('delve_araa_g_band.dat')
-data_qso_milliquas = ascii.read('delve_miliquas_g_band.dat')
+data_qso_milliquas = ascii.read('delve_miliquas_g_band_clean.dat')
 data_qso_yang = ascii.read('delve_yang_g_band.dat')
 data_bd = ascii.read('delve_bd_g_band.dat')
 
 g_mag_yang = data_qso_yang["mag_auto_g"]
-g_mag_milliquas = data_qso_milliquas["mag_auto_g"]
+g_mag_milliquas = data_qso_milliquas["mag_auto_g_1"]
 g_mag_araa = data_qso_araa["mag_auto_g"]
 g_mag_bd = data_bd["mag_auto_g"]
 
 g_magerr_yang = data_qso_yang["magerr_auto_g"]
-g_magerr_milliquas = data_qso_milliquas["magerr_auto_g"]
+g_magerr_milliquas = data_qso_milliquas["magerr_auto_g_1"]
 g_magerr_araa = data_qso_araa["magerr_auto_g"]
 g_magerr_bd = data_bd["magerr_auto_g"]
 

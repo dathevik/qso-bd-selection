@@ -5,7 +5,7 @@ from astropy.io import ascii
 import astropy.units as u
 
 dir = os.path.abspath('input_test')
-object_file = '/yang_delve_vhs_wise.fits'
+object_file = '/final_TM_test.fits'
 file = fits.open(dir + object_file)
 
 hdr_o = file[0].header
@@ -16,6 +16,10 @@ cols = datat.columns
 columns_to_process = [col for col in cols.names if col not in ['quick_object_id', 'ra', 'dec']]
 
 for col in columns_to_process:
+    # Convert to float if it's an integer array to allow NaN values
+    if datat[col].dtype.kind in 'i':  # integer type
+        datat[col] = datat[col].astype(float)
+    
     if hasattr(datat[col], "mask"):
         datat[col][datat[col].mask] = np.nan
     w = np.where((datat[col] == -99.0) | (datat[col] == 9999.0) | (datat[col] < 0.) | (datat[col] > 50))

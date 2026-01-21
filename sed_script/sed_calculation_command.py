@@ -46,7 +46,7 @@ def f_stat_calc(model1_chi2, model2_chi2, num_diff, num_free):
 # function for calculation of BIC statistical parameter and takes as an input of difference of number of parameters, chi2 and the number of data points
 def BIC_calc(chi2, num_diff, num_data):
     # ---- Obtain BIC
-    BIC_stat = chi2 - (num_diff * (math.log(num_data)))
+    BIC_stat = chi2 + (num_diff * (math.log(num_data)))
     return BIC_stat
 
 # function for converting cgs parameters to mJy as the whole script works with mJy units of fluxes
@@ -326,6 +326,7 @@ if __name__ == '__main__':
         # VIc. Calculate F-test statistical value for each object
         num_free_best = num_free_calc(num_points[i], qso_par[i], bd_rob_par, QSO_Chi2_min, BD_Chi2_min)
         num_diff_best = abs(int(qso_par[i]) - bd_rob_par)
+        num_diff_bic = bd_rob_par-(qso_par[i])
         if num_free_best > 0:
             F_test = f_stat_calc(QSO_Chi2_min, BD_Chi2_min, num_diff_best, num_free_best)
             F_test_l.append(F_test)
@@ -339,7 +340,7 @@ if __name__ == '__main__':
 
         # VId. Calculate BIC statistical value for each object
         chi2_diff = (BD_Chi2_min - QSO_Chi2_min)
-        BIC_value = BIC_calc(chi2_diff, num_diff_best, num_points[i])
+        BIC_value = BIC_calc(chi2_diff, num_diff_bic, num_points[i])
         BIC_array.append(BIC_value)
         print("-------------------------------------------------")
         print("BIC QSO:", BIC_value)
