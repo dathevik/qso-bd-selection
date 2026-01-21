@@ -2,9 +2,7 @@
 
 This repository is for the 4MOST/CHANGES project, focusing on high-redshift quasar selection using SED fitting and color-based cuts. The workflow is modular, with each major step in a dedicated folder.
 
----
-
-# Survey Data Processing Pipeline
+# The selection flowchart
 
 ```
                     ┌─────────────────┐
@@ -99,7 +97,6 @@ This repository is for the 4MOST/CHANGES project, focusing on high-redshift quas
    - **No**: DELVE DR2 photometry (1108 sources)
 8. **Merging** → Combine both branches
 9. **Final catalog** (6125 sources) → Final output
----
 
 ## Folder Structure & Purposes
 
