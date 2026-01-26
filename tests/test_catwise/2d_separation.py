@@ -60,6 +60,44 @@ tm_ddec_arcsec = tm_ddec.to(u.arcsec).value
 f23_sep_arcsec = f23_separations.to(u.arcsec).value
 tm_sep_arcsec = tm_separations.to(u.arcsec).value
 
+# Verification: Calculate separation manually using the formula to double-check
+# Angular separation formula: cos(θ) = sin(dec1)*sin(dec2) + cos(dec1)*cos(dec2)*cos(ra1 - ra2)
+print("\n=== Verification of Separation Calculation ===")
+# Test with first few sources
+n_test = min(5, len(f23_data))
+print(f"Testing first {n_test} F23 sources:")
+for i in range(n_test):
+    ra1, dec1 = np.radians(f23_data['ra'][i]), np.radians(f23_data['dec'][i])
+    ra2, dec2 = np.radians(f23_data['ra_wise'][i]), np.radians(f23_data['dec_wise'][i])
+    
+    # Manual calculation using spherical trigonometry
+    cos_sep = np.sin(dec1)*np.sin(dec2) + np.cos(dec1)*np.cos(dec2)*np.cos(ra1 - ra2)
+    # Clamp to [-1, 1] to avoid numerical errors
+    cos_sep = np.clip(cos_sep, -1.0, 1.0)
+    sep_rad = np.arccos(cos_sep)
+    sep_arcsec_manual = np.degrees(sep_rad) * 3600.0
+    
+    # Compare with astropy result
+    sep_astropy = f23_separations[i].to(u.arcsec).value
+    
+    print(f"  Source {i}: Manual={sep_arcsec_manual:.3f} arcsec, Astropy={sep_astropy:.3f} arcsec, "
+          f"Diff={abs(sep_arcsec_manual - sep_astropy):.6f} arcsec")
+    
+    # Also check RA and Dec differences
+    dra_deg = (f23_data['ra'][i] - f23_data['ra_wise'][i]) * np.cos(np.radians(f23_data['dec'][i]))
+    ddec_deg = f23_data['dec'][i] - f23_data['dec_wise'][i]
+    sep_approx = np.sqrt((dra_deg*3600)**2 + (ddec_deg*3600)**2)  # Small angle approximation
+    print(f"    RA diff: {dra_deg*3600:.3f} arcsec, Dec diff: {ddec_deg*3600:.3f} arcsec, "
+          f"Approx sep: {sep_approx:.3f} arcsec")
+
+# Print summary statistics before plotting
+print(f"\n=== Quick Statistics Check ===")
+print(f"F23 separations: min={np.min(f23_sep_arcsec):.3f}, max={np.max(f23_sep_arcsec):.3f}, "
+      f"mean={np.mean(f23_sep_arcsec):.3f}, median={np.median(f23_sep_arcsec):.3f} arcsec")
+print(f"F23 separations < 1 arcsec: {np.sum(f23_sep_arcsec < 1.0)} ({100*np.sum(f23_sep_arcsec < 1.0)/len(f23_sep_arcsec):.1f}%)")
+print(f"F23 separations < 2 arcsec: {np.sum(f23_sep_arcsec < 2.0)} ({100*np.sum(f23_sep_arcsec < 2.0)/len(f23_sep_arcsec):.1f}%)")
+print(f"F23 separations < 3 arcsec: {np.sum(f23_sep_arcsec < 3.0)} ({100*np.sum(f23_sep_arcsec < 3.0)/len(f23_sep_arcsec):.1f}%)")
+
 # Create the 2D separation plots
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
@@ -330,3 +368,4 @@ print(f"Mean Dec offset: {np.mean(tm_ddec_arcsec):.3f} arcsec")
 
 plt.show()
 
+i
