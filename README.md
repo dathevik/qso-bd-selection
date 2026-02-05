@@ -157,6 +157,9 @@ This repository is for the 4MOST/CHANGES project, focusing on high-redshift quas
 - **qso_bd_samples/**  
   Contains reference samples of known quasars and brown dwarfs for validation and comparison.Provided only with access.
 
+- **final_TM.dat**
+ This is the final output catalog generated from the final step of the workflow.
+
 ---
 
 ## Notes
